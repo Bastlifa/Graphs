@@ -161,7 +161,7 @@ class Graph:
                     copy the path
                     append the neighbor to tha back
         """
-        print("DFS Print: ")
+        # print("DFS Print: ")
         s = Stack()
         s.push([starting_vertex])
         visited = set()
@@ -185,7 +185,7 @@ class Graph:
 
         This should be done using recursion.
         """
-        print("DFS Recursive print:")
+        # print("DFS Recursive print:")
         visited = set()
         path = []
         def dfs_rec_inner(sv, dv, path):
