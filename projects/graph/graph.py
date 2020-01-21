@@ -13,18 +13,15 @@ class Graph:
         """
         Add a vertex to the graph.
         """
-        self.vertices[vertex_id] = None
-        pass  # TODO
+        self.vertices[vertex_id] = set()
 
     def add_edge(self, v1, v2):
         """
         Add a directed edge to the graph.
         """
-        if self.vertices[v1]:
+        if v1 in self.vertices and v2 in self.vertices:
             self.vertices[v1].add(v2)
-        else:
-            self.vertices[v1] = {v2}
-        pass  # TODO
+        else: raise IndexError("That vertex does not exist")
 
     def get_neighbors(self, vertex_id):
         """
@@ -38,14 +35,53 @@ class Graph:
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
-
+        """
+        create an empty queue, and enqueue the starting vertex ID
+        create an empty set to store visited vertices
+        while the queue is not empty,
+            dequeue the first vertex
+            if that vertex has not been visited:
+                mark it as visited
+                then add all of its neighbors to the back of the queue
+        """
+        print("BFT Traversal print:")
+        q = Queue()
+        q.enqueue(starting_vertex)
+        visited = set()
+        while len(q.queue) > 0:
+            v = q.dequeue()
+            if v not in visited:
+                visited.add(v)
+                print(v)
+                for n in self.vertices[v]:
+                    q.enqueue(n)
+        print("=========================================")
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        """
+        create an empty stack, and push the starting vertex ID
+        create an empty set to store visited vertices
+        while the stack is not empty,
+            pop the first vertex
+            if that vertex has not been visited:
+                mark it as visited
+                then add all of its neighbors to the top of the stack
+        """
+        print("DFT Traversal print:")
+        s = Stack()
+        s.push(starting_vertex)
+        visited = set()
+        while s.size() > 0:
+            v = s.pop()
+            if v not in visited:
+                visited.add(v)
+                print(v)
+                for n in self.vertices[v]:
+                    s.push(n)
+        print("=========================================")
 
     def dft_recursive(self, starting_vertex):
         """
@@ -54,13 +90,37 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass  # TODO
+        visited = set()
+        def dft_rec_inner(sv):
+            if sv in visited:
+                return
+            visited.add(sv)
+            print(sv)
+            for n in self.vertices[sv]:
+                dft_rec_inner(n)
+        dft_rec_inner(starting_vertex)
 
     def bfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing the shortest path from
         starting_vertex to destination_vertex in
         breath-first order.
+        """
+        """
+        create an empty queue and enqueue a path to the starting vertex ID
+        create a set to store visited vertices
+        while the queue is not empty:
+            dequeue the first path
+            grab the last vertex from the path
+            if that vertex has not been visited:
+                check if it's the target
+                if so:
+                    return path
+                mark is as visited
+                add a path to its neighbors to the back of the queue
+                copy the path
+                append the neighbor to tha back
+
         """
         pass  # TODO
 
@@ -124,7 +184,7 @@ if __name__ == '__main__':
         1, 2, 4, 3, 7, 6, 5
         1, 2, 4, 3, 7, 5, 6
     '''
-    # graph.bft(1)
+    graph.bft(1)
 
     '''
     Valid DFT paths:
@@ -133,8 +193,8 @@ if __name__ == '__main__':
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
-    # graph.dft(1)
-    # graph.dft_recursive(1)
+    graph.dft(1)
+    graph.dft_recursive(1)
 
     '''
     Valid BFS path:

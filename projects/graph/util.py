@@ -1,5 +1,9 @@
 
 # Note: This Queue class is sub-optimal. Why?
+# Because we're only ever looking at the last element,
+# if we used a DLL with tail attribute, it would be O(1)
+# While adding to the front would also be O(1).
+# But with an array, adding to the front is O(n)
 class Queue():
     def __init__(self):
         self.queue = []
