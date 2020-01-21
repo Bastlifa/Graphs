@@ -122,7 +122,22 @@ class Graph:
                 append the neighbor to tha back
 
         """
-        pass  # TODO
+        q = Queue()
+        q.enqueue([starting_vertex])
+        visited = set()
+        while q.size() > 0:
+            last_path = q.dequeue()
+            last_v = last_path[-1]
+            if last_v not in visited:
+                if last_v == destination_vertex:
+                    return last_path
+                visited.add(last_v)
+                for n in self.vertices[last_v]:
+                    new_path = [*last_path]
+                    new_path.append(n)
+                    q.enqueue(new_path)
+
+        
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -200,7 +215,7 @@ if __name__ == '__main__':
     Valid BFS path:
         [1, 2, 4, 6]
     '''
-    # print(graph.bfs(1, 6))
+    print(graph.bfs(1, 6))
 
     '''
     Valid DFS paths:
