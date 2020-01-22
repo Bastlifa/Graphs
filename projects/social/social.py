@@ -66,8 +66,8 @@ class SocialGraph:
         # Create friendships
         # Non-stretch version, O(n^2)
         # friendship_population = []
-        for i in self.users:
-            self.friendships[i] = set()
+        # for i in self.users:
+        #     self.friendships[i] = set()
         #     friends = {*self.users}
         #     friends.remove(i)
         #     friendship_population += [[i,f] for f in friends]
@@ -75,6 +75,9 @@ class SocialGraph:
         
         # random.shuffle(friendship_population)
         
+
+        for i in self.users:
+            self.friendships[i] = set()
         total_friendships = num_users * avg_friendships
 
         # Stretch 2 O(n) maybe.
@@ -139,7 +142,7 @@ class SocialGraph:
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(1000, 5)
+    sg.populate_graph(10, 2)
     print(sg.friendships)
     connections = sg.get_all_social_paths(1)
     print(connections)
