@@ -1,5 +1,8 @@
 import random
-
+import os
+import sys
+sys.path.append('../graph')
+from util import Queue
 class User:
     def __init__(self, name):
         self.name = name
@@ -9,18 +12,23 @@ class SocialGraph:
         self.last_id = 0
         self.users = {}
         self.friendships = {}
+        self.calls = 0
 
     def add_friendship(self, user_id, friend_id):
         """
         Creates a bi-directional friendship
         """
+        self.calls += 1
         if user_id == friend_id:
             print("WARNING: You cannot be friends with yourself")
+            return False
         elif friend_id in self.friendships[user_id] or user_id in self.friendships[friend_id]:
             print("WARNING: Friendship already exists")
+            return True
         else:
             self.friendships[user_id].add(friend_id)
             self.friendships[friend_id].add(user_id)
+            return True
 
     def add_user(self, name):
         """
@@ -68,17 +76,19 @@ class SocialGraph:
         # print(friendship_population)
         total_friendships = num_users * avg_friendships
 
-        def add_friendship(friend_pair):
-            nonlocal total_friendships
-            if friend_pair[1] in self.friendships[friend_pair[0]]:
-                return
-            else:
-                self.friendships[friend_pair[0]].add(friend_pair[1])
-                self.friendships[friend_pair[1]].add(friend_pair[0])
-                total_friendships -= 2
+        # def add_friendship1(friend_pair):
+        #     nonlocal total_friendships
+        #     if friend_pair[1] in self.friendships[friend_pair[0]]:
+        #         return
+        #     else:
+        #         self.friendships[friend_pair[0]].add(friend_pair[1])
+        #         self.friendships[friend_pair[1]].add(friend_pair[0])
+        #         total_friendships -= 2
 
         while total_friendships > 0:
-            add_friendship(friendship_population[-1])
+            if friendship_population[-1][0] < friendship_population[-1][1]:
+                self.add_friendship(friendship_population[-1][0], friendship_population[-1][1])
+                total_friendships -= 2
             friendship_population.pop(len(friendship_population) - 1)
 
 
@@ -91,8 +101,27 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
+        
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        def bfs(starting_vertex, destination_vertex):
+            q = Queue()
+            q.enqueue([starting_vertex])
+            visited_bfs = set()
+            while q.size() > 0:
+                last_path = q.dequeue()
+                last_v = last_path[-1]
+                if last_v not in visited_bfs:
+                    if last_v == destination_vertex:
+                        return last_path
+                    visited_bfs.add(last_v)
+                    for n in self.friendships[last_v]:
+                        new_path = [*last_path]
+                        new_path.append(n)
+                        q.enqueue(new_path)
+        for u in self.users:
+            visited[u] = bfs(user_id, u)
+            
         return visited
 
 
@@ -102,3 +131,4 @@ if __name__ == '__main__':
     print(sg.friendships)
     connections = sg.get_all_social_paths(1)
     print(connections)
+    print(sg.calls)

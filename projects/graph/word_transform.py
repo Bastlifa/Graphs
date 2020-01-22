@@ -1,4 +1,5 @@
-# Given two words (begin_word and end_word), and a dictionary's word list, return the shortest transformation sequence from begin_word to end_word, such that:
+# Given two words (begin_word and end_word), and a dictionary's word list,
+# return the shortest transformation sequence from begin_word to end_word, such that:
 # Only one letter can be changed at a time.
 # Each transformed word must exist in the word list. Note that begin_word is not a transformed word.
 # Note:
@@ -69,6 +70,7 @@ class Graph:
             if differences == 1:
                 return True
             return False
+            
         neighbors = set()
         for w in word_sublist:
             if is_neighbor(vertex_id, w):
