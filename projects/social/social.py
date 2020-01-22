@@ -64,17 +64,29 @@ class SocialGraph:
             self.users.add(i)
         
         # Create friendships
-        friendship_population = []
+        # Non-stretch version, O(n^2)
+        # friendship_population = []
         for i in self.users:
             self.friendships[i] = set()
-            friends = {*self.users}
-            friends.remove(i)
-            friendship_population += [[i,f] for f in friends]
+        #     friends = {*self.users}
+        #     friends.remove(i)
+        #     friendship_population += [[i,f] for f in friends]
 
-        # print(friendship_population)
-        random.shuffle(friendship_population)
-        # print(friendship_population)
+        
+        # random.shuffle(friendship_population)
+        
         total_friendships = num_users * avg_friendships
+
+        # Stretch 2 O(n) maybe.
+        while total_friendships > 0:
+            user_1 = random.randint(1, num_users)
+            user_2 = random.randint(1, num_users)
+            while user_2 == user_1:
+                user_2 = random.randint(1, num_users)
+            if user_2 not in self.friendships[user_1]:
+                self.add_friendship(user_1, user_2)
+                total_friendships -= 2
+        
 
         # def add_friendship1(friend_pair):
         #     nonlocal total_friendships
@@ -85,11 +97,11 @@ class SocialGraph:
         #         self.friendships[friend_pair[1]].add(friend_pair[0])
         #         total_friendships -= 2
 
-        while total_friendships > 0:
-            if friendship_population[-1][0] < friendship_population[-1][1]:
-                self.add_friendship(friendship_population[-1][0], friendship_population[-1][1])
-                total_friendships -= 2
-            friendship_population.pop(len(friendship_population) - 1)
+        # while total_friendships > 0:
+        #     if friendship_population[-1][0] < friendship_population[-1][1]:
+        #         self.add_friendship(friendship_population[-1][0], friendship_population[-1][1])
+        #         total_friendships -= 2
+        #     friendship_population.pop(len(friendship_population) - 1)
 
 
     def get_all_social_paths(self, user_id):
@@ -127,7 +139,7 @@ class SocialGraph:
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(10, 2)
+    sg.populate_graph(1000, 5)
     print(sg.friendships)
     connections = sg.get_all_social_paths(1)
     print(connections)
