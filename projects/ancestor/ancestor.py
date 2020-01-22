@@ -12,8 +12,9 @@ def earliest_ancestor(ancestors, starting_node):
         g.add_edge(a[0], a[1])
     paths = []
     for a in g.vertices:
-        if g.dfs(a, starting_node) is not None:
-            paths.append(g.dfs(a, starting_node))
+        if g.dfs_recursive(a, starting_node) is not None and\
+            len(g.dfs_recursive(a, starting_node)) > 0:
+            paths.append(g.dfs_recursive(a, starting_node))
     
     if len(paths) == 1: return -1
 

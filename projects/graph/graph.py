@@ -161,7 +161,7 @@ class Graph:
                     copy the path
                     append the neighbor to tha back
         """
-        # print("DFS Print: ")
+        
         s = Stack()
         s.push([starting_vertex])
         visited = set()
@@ -204,6 +204,20 @@ class Graph:
         ret_path.reverse()
         return ret_path
         
+    def def_rec_2(self, starting_vertex, target_value, visited=None, path=None):
+        if visited is None:
+            visited = set()
+        if path is None:
+            path = []
+        visited.add(starting_vertex)
+        path = path + [starting_vertex]
+        if starting_vertex == target_value:
+            return path
+        for child_vert in self.vertices[starting_vertex]:
+            if child_vert not in visited:
+                new_path = self.def_rec_2(child_vert, target_value, visited, path)
+                if new_path:
+                    return new_path
 
 # v = {1, 2, 3, }
 # p = []
